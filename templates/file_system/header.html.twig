@@ -1,0 +1,13 @@
+{# Check if root "/" is parent. If not, show the hash for the file above ."Go up" #}
+
+<div class="header-title">{{ directory }}</div>
+<nav>
+    <ul>
+        {% if is_granted("ROLE_ADMIN") %}
+            <li href="/admin">Admin</li>
+        {% endif %}
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</nav>

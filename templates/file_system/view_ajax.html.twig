@@ -1,0 +1,15 @@
+<div class="content-top">
+    {% include "file_system/header.html.twig" %}
+</div>
+
+<div class="content">
+
+    {% for child in folder %}
+        {% include "file_system/item_card.html.twig" %}
+    {% endfor %}
+
+    {% for child in files %}
+        {% include "file_system/item_card.html.twig" %}
+    {% endfor %}
+
+</div>

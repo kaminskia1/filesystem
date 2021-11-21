@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+    padding: 0;
+    margin: 0;
+}
+
+.card {
+    margin: 16px;
+    padding: 16px;
+    background: white;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+}
+.icon {
+    width: 64px;
+    height: 64px;
+}
+
+.header {
+    display: flex;
+    height: 56px;
+    justify-content: space-between;
+    position: relative;
+}
+.content-top {
+    align-items: center;
+    box-shadow: 0 1px 0 #e2e8f0;
+    margin-bottom: 1px;
+    padding: 5px 15px 5px 15px;
+}
+.sidebar-wrapper {
+    position:relative
+}
+.sidebar {
+    background:#f8fafc;
+    height:100%;
+    box-shadow: inset -1px 0 0 #e2e8f0;
+    min-height:100vh;
+    overflow-x:hidden;
+    overflow-y:auto;
+    padding:15px 20px;
+    position:fixed;
+    top:0;
+    min-width: 190px;
+    transition:left .3s;
+    z-index:2021
+}
+
+
+.content-wrapper {
+    width: calc(100% - 230px);
+    margin-left: 230px;
+}
+
+.content-top {
+    display:flex;
+    height:56px;
+    justify-content:space-between;
+    padding: 10px 0 10px 0;
+    position:relative
+}
+
+.content {
+    padding: 10px 15px 10px 15px;
+}
+.header-title {
+    font-size: 24px;
+    padding-left: 20px;
+}
+.brand {
+    font-size: 24px;
+}
+
+
+/** Begin explorer styles **/
+.explorer-container {
+    list-style: none;
+    padding-left: 0;
+    margin-left: -25px;
+}
+
+.section {
+    padding-left: 15px;
+}
+.section li {
+    display: flow;
+}
+
+.explorer-item-bar {
+    margin-bottom: 5px;
+}
+.explorer-item-bar:hover {
+    color: darkslategrey;
+}
+
+.explorer-caret {
+    cursor: pointer;
+    fill: black;
+}
+
+.explorer-caret:hover {
+    fill: #2196F3;
+}
+
+.explorer-item-title {
+    cursor: pointer;
+    display: inline-block;
+}
+.explorer-extended {
+    transform: rotate(90deg);
+}
