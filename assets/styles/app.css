@@ -113,3 +113,7 @@ body {
 .explorer-extended {
     transform: rotate(90deg);
 }
+
+.hidden {
+    display: none;
+}

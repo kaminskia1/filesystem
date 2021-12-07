@@ -1,9 +1,8 @@
 // Bind ajax request and disable default href's
-function ajax(x = null) {
+export function ajax(x = null) {
     if (x === null) x = Array.from(document.getElementsByTagName("a"));
     x.forEach(element => {
-        if (element.getAttribute("data-ajax") === "true") {
-
+        if (element.getAttribute("data-ajax") === "true" && element.getAttribute("data-bound") !== true) {
             // Remove default <a> redirects, as javascript is enabled
             element.addEventListener("click", e => { e.preventDefault(); } );
 
@@ -34,7 +33,7 @@ function ajax(x = null) {
 
                     });
             });
+            element.setAttribute("data-bound", true)
         }
     })
 }
-ajax();
