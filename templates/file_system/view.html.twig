@@ -17,9 +17,17 @@
                 {{ explorer.render([explorerTree], true) }}
             </div>
         </div>
+        <div class="user-block">
+            {% if app.user is not null %}
+                <p>{{ app.user.email }}</p>
+            {% else %}
+                <p id="login" data-url="{{ url('app_login') }}">Login</p>
+            {% endif %}
+        </div>
     </div>
 
     <div class="content-wrapper">
+
         <div class="target-ajax">
             {% include "file_system/view_ajax.html.twig " %}
         </div>
