@@ -1,12 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 
+/* Base */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: white;
     padding: 0;
     margin: 0;
 }
+a {
+    text-decoration: none;
+    color: black;
+}
 
+
+
+/* Content */
 .card {
     margin: 16px;
     padding: 16px;
@@ -14,6 +22,9 @@ body {
     display: inline-block;
     cursor: pointer;
     text-align: center;
+}
+.card:hover {
+    background: rgba(0,0,0,.08);
 }
 .icon {
     width: 64px;
@@ -110,6 +121,7 @@ body {
     cursor: pointer;
     display: inline-block;
 }
+
 .explorer-extended {
     transform: rotate(90deg);
 }
