@@ -37,6 +37,7 @@ class Folder
 
     /**
      * @var bool Flag for explorer generator
+     * @todo deprecate
      */
     public $hasChildren = false;
 
@@ -96,6 +97,7 @@ class Folder
         return $this->childFiles;
     }
 
+
     public function addContentsFile(File $contentsFile): self
     {
         if (!$this->childFiles->contains($contentsFile)) {
@@ -130,6 +132,12 @@ class Folder
 
         return $this;
     }
+
+    public function hasChildFolders(): bool
+    {
+        return $this->childFolders->count() > 0;
+    }
+
 
     /**
      * @return Collection|self[]
@@ -225,5 +233,6 @@ class Folder
     {
         return 'folder';
     }
+
 
 }

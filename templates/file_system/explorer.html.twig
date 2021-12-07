@@ -4,9 +4,9 @@
             <li data-uuid="{{ i.uuid }}">
 
                 <div class="explorer-item-bar">
-                    {% if i.hasChildren %}
+                    {% if i.hasChildFolders() or i.hasChildren %}
 
-                        <svg class="explorer-caret{% if i.getChildFolders().count() > 0 %} explorer-extended{% endif %}" width="16px" height="16px" viewBox="0 0 24 24" fill="none"
+                        <svg class="explorer-caret{% if i.hasChildFolders() and recursive%} explorer-extended{% endif %}" width="16px" height="16px" viewBox="0 0 24 24" fill="none"
                              data-uuid="{{ url('ajax_explorer_stem', {uuid: i.uuid}) }}"
                              xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -23,7 +23,6 @@
                                 data-ajax-target="target-ajax"
                                 href="{% if i.url is defined %}{{ i.url }}{% else %}{{ url('site_view_folder', {folder: i.uuid}) }}{% endif %}"
                                 title="{{ i.name }}">
-
                             <img width="16px" src="{{ asset("build/images/icons/folder.svg") }}"/> {{ i.name }}
                         </a>
                     </div>

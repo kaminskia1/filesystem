@@ -116,6 +116,8 @@ class FilesystemController extends AbstractController
             $folder = $this->getDoctrine()->getRepository(Folder::class)->findUuid($uuid);
         }
 
+        dump($folder->getChildFolders());
+        dump($folder);
         return $this->render("file_system/explorer_node.html.twig", [
             'folders'=>$folder->getChildFolders()
         ]);
