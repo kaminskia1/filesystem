@@ -1,43 +1,42 @@
-{% macro render(folders, recursive) %}
-    <ul class="section">
-        {% for i in folders %}
-            <li data-uuid="{{ i.uuid }}">
+{%- macro render(folders, recursive) -%}
+    {%- if folders|length > 0 -%}
+        <ul class="section">
+            {%- for i in folders -%}
+                <li data-uuid="{{ i.uuid }}">
+                    <div class="explorer-item-bar">
+                        {%- if i.hasChildFolders() or i.hasChildren -%}
+                            <svg class="explorer-caret{% if i.hasChildFolders() and recursive %} explorer-extended{% endif %}"
+                                 width="16px" height="16px" viewBox="0 0 24 24" fill="none"
+                                 data-uuid="{{ url('ajax_explorer_stem', {uuid: i.uuid}) }}"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M9.96967 7.46967C10.2626 7.17678 10.7374 7.17678 11.0303 7.46967L15.0303 11.4697C15.3232 11.7626 15.3232 12.2374 15.0303 12.5303L11.0303 16.5303C10.7374 16.8232 10.2626 16.8232 9.96967 16.5303C9.67678 16.2374 9.67678 15.7626 9.96967 15.4697L13.4393 12L9.96967 8.53033C9.67678 8.23744 9.67678 7.76256 9.96967 7.46967Z"/>
+                            </svg>
 
-                <div class="explorer-item-bar">
-                    {% if i.hasChildFolders() or i.hasChildren %}
-
-                        <svg class="explorer-caret{% if i.hasChildFolders() and recursive%} explorer-extended{% endif %}" width="16px" height="16px" viewBox="0 0 24 24" fill="none"
-                             data-uuid="{{ url('ajax_explorer_stem', {uuid: i.uuid}) }}"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                  d="M9.96967 7.46967C10.2626 7.17678 10.7374 7.17678 11.0303 7.46967L15.0303 11.4697C15.3232 11.7626 15.3232 12.2374 15.0303 12.5303L11.0303 16.5303C10.7374 16.8232 10.2626 16.8232 9.96967 16.5303C9.67678 16.2374 9.67678 15.7626 9.96967 15.4697L13.4393 12L9.96967 8.53033C9.67678 8.23744 9.67678 7.76256 9.96967 7.46967Z"/>
-                        </svg>
-                    {% else %}
-                        <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                        </svg>
-                    {% endif %}
-                    <div class="explorer-item-title">
-                        <a
-                                data-ajax="true"
-                                data-ajax-target="target-ajax"
-                                href="{% if i.url is defined %}{{ i.url }}{% else %}{{ url('site_view_folder', {folder: i.uuid}) }}{% endif %}"
-                                title="{{ i.name }}">
-                            <img width="16px" src="{{ asset("build/images/icons/folder.svg") }}"/> {{ i.name }}
-                        </a>
+                        {%- else -%}
+                            <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                            </svg>
+                        {%- endif -%}
+                        <div class="explorer-item-title">
+                            <a
+                                    data-ajax="true"
+                                    data-ajax-target="target-ajax"
+                                    href="{% if i.url is defined %}{{ i.url }}{% else %}{{ url('site_view_folder', {folder: i.uuid}) }}{% endif %}"
+                                    title="{{ i.name }}">
+                                <img width="16px" src="{{ asset("build/images/icons/folder.svg") }}"/> {{ i.name }}
+                            </a>
+                        </div>
                     </div>
-                </div>
-
-                <div class="explorer-item-contents">
-
-                    {% if recursive %}
-                        {% import _self as self %}
-                        {{ self.render(i.getChildFolders(), true) }}
-                    {% endif %}
-                </div>
-
-            </li>
-        {% endfor %}
-    </ul>
-{% endmacro %}
+                    <div class="explorer-item-contents">
+                        {%- if recursive -%}
+                            {%- import _self as self -%}
+                            {{- self.render(i.getChildFolders(), true) -}}
+                        {%- endif -%}
+                    </div>
+                </li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{%- endmacro -%}
 

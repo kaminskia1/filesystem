@@ -119,6 +119,7 @@ a {
 }
 
 .explorer-item-title {
+    padding-left: 2px;
     cursor: pointer;
     display: inline-block;
 }
@@ -130,6 +131,7 @@ a {
 .hidden {
     display: none;
 }
+
 
 /* User Block */
 .user-block {

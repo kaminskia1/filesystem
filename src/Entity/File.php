@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -60,11 +61,34 @@ class File
 
     public function __toString()
     {
-        if (is_null($this->getExtension()))
-        {
+        if (is_null($this->getExtension())) {
             return $this->getName();
         }
         return $this->getName() . "." . $this->getExtension();
+    }
+
+    public function getExtension(): ?string
+    {
+        return $this->extension;
+    }
+
+    public function setExtension(string $extension): self
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -92,30 +116,6 @@ class File
     public function setFolder(?Folder $folder): self
     {
         $this->folder = $folder;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getExtension(): ?string
-    {
-        return $this->extension;
-    }
-
-    public function setExtension(string $extension): self
-    {
-        $this->extension = $extension;
 
         return $this;
     }
@@ -155,5 +155,5 @@ class File
 
         return $this;
     }
-    
+
 }

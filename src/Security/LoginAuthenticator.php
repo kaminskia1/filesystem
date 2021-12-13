@@ -29,6 +29,13 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         $this->urlGenerator = $urlGenerator;
     }
 
+    public function supports(Request $request): bool
+    {
+        return $request->isMethod('POST');
+
+    }
+
+
     public function authenticate(Request $request): PassportInterface
     {
         $email = $request->request->get('email', '');
@@ -50,9 +57,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        //return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        return new RedirectResponse($this->urlGenerator->generate('site_view'));
     }
 
     protected function getLoginUrl(Request $request): string

@@ -14,33 +14,28 @@ use Symfony\Component\Uid\Uuid;
 class Folder
 {
     /**
+     * @var bool Flag for explorer generator
+     * @todo deprecate
+     */
+    public $hasChildren = false;
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", unique=true)
      */
     private $uuid;
-
     /**
      * @ORM\Column(type="integer")
      */
     private $permission = 0;
-
     /**
      * @ORM\OneToMany(targetEntity=File::class, mappedBy="folder")
      */
     private $childFiles;
-
-    /**
-     * @var bool Flag for explorer generator
-     * @todo deprecate
-     */
-    public $hasChildren = false;
-
     /**
      * Self-referencing relationship.
      *
@@ -48,10 +43,10 @@ class Folder
      */
     private $childFolders;
 
-        /**
-         * @ORM\ManyToOne(targetEntity=Folder::class, inversedBy="contentsFolders")
-         */
-        private $parentFolder;
+    /**
+     * @ORM\ManyToOne(targetEntity=Folder::class, inversedBy="contentsFolders")
+     */
+    private $parentFolder;
 
 
     /**
@@ -70,6 +65,59 @@ class Folder
     public function __toString()
     {
         return $this->getPath();
+    }
+
+    public function getPath()
+    {
+        $arr = [];
+        $this->_getPath($this, $arr);
+
+        // Unset last element, as it is the root
+
+        // Reverse the array and prepend a / to indicate the root
+        $path = "";
+        foreach ($arr as $ele) {
+            if (mb_strlen($path) < 35) {
+                $path = "/$ele" . $path;
+            } else {
+                $path = "/.." . $path;
+                break;
+            }
+        }
+        return $path;
+    }
+
+    private function _getPath(Folder $self, &$path)
+    {
+        array_push($path, $self->getName());
+        if (!is_null($self->getParentFolder())) {
+            $this->_getPath($self->getParentFolder(), $path);
+        }
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getParentFolder(string $name = null): ?self
+    {
+
+        return $this->parentFolder;
+    }
+
+    public function setParentFolder(?self $parentFolder): self
+    {
+        $this->parentFolder = $parentFolder;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -97,7 +145,6 @@ class Folder
         return $this->childFiles;
     }
 
-
     public function addContentsFile(File $contentsFile): self
     {
         if (!$this->childFiles->contains($contentsFile)) {
@@ -120,24 +167,10 @@ class Folder
         return $this;
     }
 
-    public function getParentFolder(string $name = null): ?self
-    {
-
-        return $this->parentFolder;
-    }
-
-    public function setParentFolder(?self $parentFolder): self
-    {
-        $this->parentFolder = $parentFolder;
-
-        return $this;
-    }
-
     public function hasChildFolders(): bool
     {
         return $this->childFolders->count() > 0;
     }
-
 
     /**
      * @return Collection|self[]
@@ -146,7 +179,6 @@ class Folder
     {
         return $this->childFolders;
     }
-
 
     /**
      * Does not remove other side's relationship. Only utilize this to modify local instances
@@ -161,6 +193,46 @@ class Folder
         return $this;
     }
 
+    /**
+     * Return an ArrayCollection of folders accessible by the provided permission level
+     *
+     * @param int             $permLevel
+     *
+     * @return ArrayCollection
+     */
+    public function getChildFoldersByPermission(int $permLevel): ArrayCollection
+    {
+        $newFolders = new ArrayCollection();
+        foreach ($this->getChildFolders() as $folder) {
+
+            /** @var Folder $folder */
+            if ($folder->getPermission() >= $permLevel)
+            {
+                $newFolders->add($folder);
+            }
+        }
+        return $newFolders;
+    }
+
+    /**
+     * Return an ArrayCollection of folders accessible by the provided permission level
+     *
+     * @param int             $permLevel
+     *
+     * @return ArrayCollection
+     */
+    public function getChildFilesByPermission(int $permLevel): ArrayCollection
+    {
+        $newFiles = new ArrayCollection();
+        foreach ($this->getChildFiles() as $file) {
+
+            /** @var Folder $folder */
+            if ($file->getPermission() >= $permLevel) {
+                $newFiles->add($file);
+            }
+        }
+        return $newFiles;
+    }
 
     public function addContentsFolder(self $contentsFolder): self
     {
@@ -180,39 +252,6 @@ class Folder
                 $contentsFolder->setParentFolder(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getPath()
-    {
-        $arr = [];
-        $this->_getPath($this, $arr);
-
-        // Unset last element, as it is the root
-
-        // Reverse the array and prepend a / to indicate the root
-        return "/" . implode("/", array_reverse($arr));
-    }
-
-    private function _getPath(Folder $self, &$path)
-    {
-        array_push($path, $self->getName());
-        if (!is_null($self->getParentFolder()))
-        {
-            $this->_getPath($self->getParentFolder(), $path);
-        }
-    }
-
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
 
         return $this;
     }
