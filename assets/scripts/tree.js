@@ -1,5 +1,8 @@
-export function extendTree(ajaxModule, x = null) {
-    if (x == null) x = Array.from(document.getElementsByClassName("explorer-caret"));
+export function tree(x = []) {
+
+    const ajaxModule = require("../scripts/ajax");
+
+    if (x.length === 0) x = Array.from(document.getElementsByClassName("explorer-caret"));
     x.forEach(ele => {
         ele.addEventListener("click", a => {
             let activeRow = a.target;
@@ -29,7 +32,7 @@ export function extendTree(ajaxModule, x = null) {
                                 Array.from(container.children[0].children)
                                     .forEach((child) => {
                                         // recursion \o/
-                                        extendTree(ajaxModule, [child.children[0].children[0]]);
+                                        tree(ajaxModule, [child.children[0].children[0]]);
                                         ajaxModule.ajax([child.children[0].children[1].children[0]]);
                                     });
                             });

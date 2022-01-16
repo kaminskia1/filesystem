@@ -23,7 +23,9 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
+        "@sweetalert2/theme-minimal": "^5.0.8",
         "fontawesome": "^5.6.3",
-        "sweetalert2": "^11.3.0"
+        "sweetalert2": "^11.3.0",
+        "tippy": "0.0.0"
     }
 }

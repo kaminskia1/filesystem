@@ -6,10 +6,20 @@ use App\Entity\File;
 use App\Entity\Folder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
+/**
+ * Class FilesystemController
+ *
+ * @package App\Controller
+ */
 
 class FilesystemController extends AbstractController
 {
@@ -32,15 +42,15 @@ class FilesystemController extends AbstractController
     /**
      * Main view controller
      *
+     * @param Request     $request
+     * @param String|null $folder
+     *
+     * @return Response
      * @todo: Validate user has access to folder/file
      *
      * @Route("/", name="site_view")
      * @Route("/folder/{folder}", name="site_view_folder")
      *
-     * @param Request     $request
-     * @param String|null $folder
-     *
-     * @return Response
      */
     public function view(Request $request, $folder = null): Response
     {
@@ -62,18 +72,6 @@ class FilesystemController extends AbstractController
                 'user' => $this->getUser(),
                 'type' => 404
             ]);
-        }
-
-        // If folder permission > 0, login is required
-        if ($folder->getPermission() > 0) {
-
-            // If not logged in, or logged in permission < folder permission, deny
-            if (is_null($this->getUser()) || $folder->getPermission() > $this->getUser()->getPermission()) {
-                return $this->render($request->isXmlHttpRequest() ? 'file_system/error_ajax.html.twig' : 'file_system/error.html.twig', [
-                    'user' => $this->getUser(),
-                    'type' => 403
-                ]);
-            }
         }
 
         // Render template
@@ -111,37 +109,14 @@ class FilesystemController extends AbstractController
 
         // Grab all orphan folders
         foreach ($this->getDoctrine()->getRepository(Folder::class)->findBy(['parentFolder' => null]) as $f) {
-
             /* @var Folder $f */
-
-            // Check that user has access to said folder
-            if ($f->getPermission() > 0)
-            {
-                if ($this->getUser() != null && $this->getUser()->getPermission() >= $f->getPermission())
-                {
-                    $folder->addContentsFolder($f);
-                }
-            } else {
-                $folder->addContentsFolder($f);
-            }
-
+            $folder->addContentsFolder($f);
         }
 
         // Grab all orphan files
         foreach ($this->getDoctrine()->getRepository(File::class)->findBy(['folder' => null]) as $f) {
-
             /* @var File $f */
-
-            // Check that user has access to said file
-            if ($f->getPermission() > 0)
-            {
-                if ($this->getUser() != null && $this->getUser()->getPermission() >= $f->getPermission())
-                {
-                    $folder->addContentsFile($f);
-                }
-            } else {
-                $folder->addContentsFile($f);
-            }
+            $folder->addContentsFile($f);
         }
         return $folder;
 
@@ -150,11 +125,11 @@ class FilesystemController extends AbstractController
     /**
      * Generate a tree structure based on the requested folder's location
      *
-     * @todo: Verify user has access to folders/files mentioned in tree. Throw global error if un-allowed is found.
-     *
      * @param Folder $folder
      *
      * @return Folder
+     * @todo: Verify user has access to folders/files mentioned in tree. Throw global error if un-allowed is found.
+     *
      */
     protected function _getExplorerTree(Folder $folder)
     {
@@ -208,15 +183,70 @@ class FilesystemController extends AbstractController
                 ->findUuid($uuid);
         }
 
-        $perm = 0;
-        if ($this->getUser() != null)
-        {
-            $perm = $this->getUser()->getPermission();
-        }
-
         return $this->render("file_system/explorer_node.html.twig", [
-            'folders' => $folder->getChildFoldersByPermission($perm)
+            'folders' => $folder->getChildFolders()
         ]);
     }
 
+    /**
+     * Add folder controller
+     *
+     * @isGranted("ROLE_ADMIN")
+     * @Route("/add/folder", name="site_add_folder_root")
+     * @Route("/add/folder/{parentUuid}", name="site_add_folder")
+     *
+     * @param Request $request
+     * @param null    $parentUuid
+     *
+     * @return Response
+     * @throws Exception
+     */
+    public function addFolder(Request $request, $parentUuid = null)
+    {
+        $folder = new Folder();
+        if ($parentUuid !== null) {
+            $parent = $this->getDoctrine()->getManager()->getRepository(Folder::class)->findUuid($parentUuid);
+            if ($parent === null) {
+                throw new Exception("Invalid parent UUID");
+            }
+            $folder->setParentFolder($parent);
+        }
+
+        $form = $this->createFormBuilder($folder)
+            ->add('name', TextType::class)
+            ->add('submit', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $folder = $form->getData();
+
+            $this->entityManager->persist($folder);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute("site_view_folder", ['folder' => $folder->getUuid()]);
+        }
+
+        return $this->renderForm('file_system/add/folder.html.twig', [
+            'parent' => $parentUuid,
+            'form' => $form
+        ]);
+    }
+
+    /**
+     * Add file controller
+     *
+     * @isGranted("ROLE_ADMIN")
+     * @Route("/add/file", name="site_add_file_root")
+     * @Route("/add/file/{parentUuid}", name="site_add_file")
+     *
+     * @param String $parentUuid
+     *
+     * @return Response
+     */
+    public function addFile($parentUuid = null)
+    {
+
+    }
 }

@@ -47,6 +47,5 @@ class FileCrudController extends AbstractCrudController
         yield ChoiceField::new('type', "Location")->setChoices([
             'a' => 'b'
         ]);
-        yield NumberField::new('permission', "Permission Level");
     }
 }

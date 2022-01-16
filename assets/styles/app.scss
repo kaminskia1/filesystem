@@ -1,3 +1,5 @@
+@import "~bootstrap";
+@import '~@sweetalert2/theme-minimal/minimal.scss';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 
 /* Base */
@@ -9,6 +11,7 @@ html, body {
     width: 100%;
     height: 100%;
 }
+
 a {
     text-decoration: none;
     color: black;
@@ -24,8 +27,9 @@ a {
     display: inline-block;
     cursor: pointer;
     text-align: center;
+    border: 0;
 }
-.card:hover {
+.bg-hover:hover {
     background: rgba(0,0,0,.05);
 }
 .icon {
@@ -55,11 +59,11 @@ a {
 .sidebar {
     overflow-x:hidden;
     overflow-y:auto;
-    padding:15px 20px;
+    padding:10px 15px;
     top:0;
     transition:left .3s;
     z-index:2021;
-    height: calc(100vh - 75px);
+    height: calc(100vh - 45px);
 }
 
 
@@ -92,7 +96,7 @@ a {
 .explorer-container {
     list-style: none;
     padding-left: 0;
-    margin-left: -25px;
+    margin-left: -20px;
 }
 
 .section {
@@ -102,9 +106,7 @@ a {
     display: flow;
 }
 
-.explorer-item-bar {
-    margin-bottom: 5px;
-}
+
 .explorer-item-bar:hover {
     color: darkslategrey;
 }
@@ -137,14 +139,34 @@ a {
 .user-block {
     position: relative;
     vertical-align: bottom;
+    text-align: center;
     display: inline-block;
     min-width: 230px;
     width: 100%;
     height: 45px;
 }
-.user-block p {
+.user-block > a {
     margin: 0 15px 0 15px;
     cursor: pointer;
     text-align: center;
     line-height: 45px;
+}
+.dropdown-menu div {
+    padding-left: 20px;
+}
+.dropdown-menu {
+    margin-left: 25px !important;
+    margin-right: 25px !important;
+    min-width: 150px;
+    max-width: 180px;
+}
+.dropdown-toggle:after {
+    display:none !important;
+}
+.nav-icon {
+    border-radius:2px;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+    transition: none;
+    cursor: pointer;
 }

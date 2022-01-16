@@ -25,11 +25,6 @@ class File
     private $uuid;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $permission = 0;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Folder::class, inversedBy="contentsFiles")
      */
     private $folder;
@@ -94,18 +89,6 @@ class File
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPermission(): ?int
-    {
-        return $this->permission;
-    }
-
-    public function setPermission(int $permission): self
-    {
-        $this->permission = $permission;
-
-        return $this;
     }
 
     public function getFolder(): ?Folder

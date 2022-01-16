@@ -938,6 +938,11 @@
   resolved "https://registry.yarnpkg.com/@stimulus/webpack-helpers/-/webpack-helpers-2.0.0.tgz#54296d2a2dffd4f962d2e802d99a3fdd84b8845f"
   integrity sha512-D6tJWsAC024MwGEIKlUVYU8Ln87mlrmiwHvYAjipg+s8H4eLxUMQ3PZkWyPevfipH+oR3leuHsjYsK1gN5ViQA==
 
+"@sweetalert2/theme-minimal@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@sweetalert2/theme-minimal/-/theme-minimal-5.0.8.tgz#0f2e0e7139256fab6868efe39ddfb2a473e080d6"
+  integrity sha512-nTKnwNNOItPCht5cT8QW9YUlbTHpcCcslPKW4ZhTO2TnEvLcjICgqdqAhDjrNGvFyayzV3/z60AyangVgW98DQ==
+
 "@symfony/stimulus-bridge@^2.0.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@symfony/stimulus-bridge/-/stimulus-bridge-2.1.0.tgz#d5cf8c29847fd42f40a8a6464e057a1def05ced9"
@@ -4399,6 +4404,11 @@ svgo@^2.3.0:
     nanocolors "^0.1.12"
     stable "^0.1.8"
 
+sweetalert2@^11.3.0:
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.3.0.tgz#39be4b23a02be479f36441f3a5f16a5d6364aba3"
+  integrity sha512-C0TFp0VLxgx+PmhJ0mL8qzx+iYjnCLdDbvQHKY6KAGI+xwawMvLkStPgw2LmJl6itaDhR/qLQStPFIbr1VK9Ow==
+
 tapable@^2.1.1, tapable@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
@@ -4434,6 +4444,11 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+
+tippy@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/tippy/-/tippy-0.0.0.tgz#d6b656ca437caca67518e513e4a1b14beb7fc5d4"
+  integrity sha1-1rZWykN8rKZ1GOUT5KGxS+t/xdQ=
 
 tmp@^0.2.1:
   version "0.2.1"

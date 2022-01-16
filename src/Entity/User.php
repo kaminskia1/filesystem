@@ -42,17 +42,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $plainPassword;
 
 
-    /**
-     * Permission level.
-     * - Anon: 0
-     * - User: 1
-     * - Admin: 10
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $permission = 1;
-
-
     public function getId(): ?int
     {
         return $this->id;
@@ -96,11 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
-        if ($this->getPermission() >= 10)
-        {
-            $roles[] = 'ROLE_ADMIN';
-        }
+        $roles[] = 'ROLE_ADMIN';
         return array_unique($roles);
     }
 
@@ -144,18 +129,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         $this->plainPassword = null;
-    }
-
-    public function getPermission(): ?int
-    {
-        return $this->permission;
-    }
-
-    public function setPermission(int $permission): self
-    {
-        $this->permission = $permission;
-
-        return $this;
     }
 
     /**

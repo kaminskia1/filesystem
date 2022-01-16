@@ -19,6 +19,5 @@ class UserCrudController extends AbstractCrudController
     {
         yield EmailField::new('email', 'E-Mail');
         yield TextField::new('plainPassword', "New Password")->onlyOnForms()->setRequired( $pageName == "new" );
-        yield NumberField::new('permission', "Permission Level")->hideOnIndex();
     }
 }

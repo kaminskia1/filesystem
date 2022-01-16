@@ -29,10 +29,6 @@ class Folder
      */
     private $uuid;
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $permission = 0;
-    /**
      * @ORM\OneToMany(targetEntity=File::class, mappedBy="folder")
      */
     private $childFiles;
@@ -125,18 +121,6 @@ class Folder
         return $this->id;
     }
 
-    public function getPermission(): ?int
-    {
-        return $this->permission;
-    }
-
-    public function setPermission(int $permission): self
-    {
-        $this->permission = $permission;
-
-        return $this;
-    }
-
     /**
      * @return Collection|File[]
      */
@@ -193,46 +177,6 @@ class Folder
         return $this;
     }
 
-    /**
-     * Return an ArrayCollection of folders accessible by the provided permission level
-     *
-     * @param int             $permLevel
-     *
-     * @return ArrayCollection
-     */
-    public function getChildFoldersByPermission(int $permLevel): ArrayCollection
-    {
-        $newFolders = new ArrayCollection();
-        foreach ($this->getChildFolders() as $folder) {
-
-            /** @var Folder $folder */
-            if ($folder->getPermission() >= $permLevel)
-            {
-                $newFolders->add($folder);
-            }
-        }
-        return $newFolders;
-    }
-
-    /**
-     * Return an ArrayCollection of folders accessible by the provided permission level
-     *
-     * @param int             $permLevel
-     *
-     * @return ArrayCollection
-     */
-    public function getChildFilesByPermission(int $permLevel): ArrayCollection
-    {
-        $newFiles = new ArrayCollection();
-        foreach ($this->getChildFiles() as $file) {
-
-            /** @var Folder $folder */
-            if ($file->getPermission() >= $permLevel) {
-                $newFiles->add($file);
-            }
-        }
-        return $newFiles;
-    }
 
     public function addContentsFolder(self $contentsFolder): self
     {

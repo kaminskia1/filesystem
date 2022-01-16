@@ -46,6 +46,5 @@ class FolderCrudController extends AbstractCrudController
         yield TextField::new('uuid', "UUID")->onlyOnDetail();
         yield TextField::new('name', "Name");
         yield AssociationField::new('parentFolder', "Location");
-        yield NumberField::new('permission', "Permission Level");
     }
 }
