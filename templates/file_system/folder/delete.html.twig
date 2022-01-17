@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Folder{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'action': url('site_folder_delete', {uuid: folderUuid}) }) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.type) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -35,13 +35,20 @@ export function ajax(x = []) {
                             .querySelectorAll("[data-ajax=true]")
                         );
 
-                        // Register all popup events on immuted elements
+                        // Register all events on updated elements
                         /** @TODO: Convert "a" to all elements */
                         const Popup = require('../scripts/popup');
-                        Popup.register(document
+                        Popup.popup(document
                             .getElementsByClassName(element.getAttribute("data-ajax-target"))
                             .item(0)
                             .querySelectorAll("[data-popup=true]")
+                        );
+
+                        const Contextmenu = require('../scripts/contextmenu');
+                        Contextmenu.contextmenu(document
+                            .getElementsByClassName(element.getAttribute("data-ajax-target"))
+                            .item(0)
+                            .querySelectorAll("[data-contextmenu=true]")
                         );
 
                         // Rewrite the url
@@ -49,7 +56,7 @@ export function ajax(x = []) {
 
                     });
             });
-            element.setAttribute("data-ajax-bound", true)
+            element.setAttribute("data-ajax-bound", true);
         }
     })
 }

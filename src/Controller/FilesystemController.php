@@ -49,7 +49,7 @@ class FilesystemController extends AbstractController
      * @todo: Validate user has access to folder/file
      *
      * @Route("/", name="site_view")
-     * @Route("/folder/{folder}", name="site_view_folder")
+     * @Route("/path/{folder}", name="site_view_folder")
      *
      */
     public function view(Request $request, $folder = null): Response
@@ -188,65 +188,5 @@ class FilesystemController extends AbstractController
         ]);
     }
 
-    /**
-     * Add folder controller
-     *
-     * @isGranted("ROLE_ADMIN")
-     * @Route("/add/folder", name="site_add_folder_root")
-     * @Route("/add/folder/{parentUuid}", name="site_add_folder")
-     *
-     * @param Request $request
-     * @param null    $parentUuid
-     *
-     * @return Response
-     * @throws Exception
-     */
-    public function addFolder(Request $request, $parentUuid = null)
-    {
-        $folder = new Folder();
-        if ($parentUuid !== null) {
-            $parent = $this->getDoctrine()->getManager()->getRepository(Folder::class)->findUuid($parentUuid);
-            if ($parent === null) {
-                throw new Exception("Invalid parent UUID");
-            }
-            $folder->setParentFolder($parent);
-        }
 
-        $form = $this->createFormBuilder($folder)
-            ->add('name', TextType::class)
-            ->add('submit', SubmitType::class)
-            ->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $folder = $form->getData();
-
-            $this->entityManager->persist($folder);
-            $this->entityManager->flush();
-
-            return $this->redirectToRoute("site_view_folder", ['folder' => $folder->getUuid()]);
-        }
-
-        return $this->renderForm('file_system/add/folder.html.twig', [
-            'parent' => $parentUuid,
-            'form' => $form
-        ]);
-    }
-
-    /**
-     * Add file controller
-     *
-     * @isGranted("ROLE_ADMIN")
-     * @Route("/add/file", name="site_add_file_root")
-     * @Route("/add/file/{parentUuid}", name="site_add_file")
-     *
-     * @param String $parentUuid
-     *
-     * @return Response
-     */
-    public function addFile($parentUuid = null)
-    {
-
-    }
 }

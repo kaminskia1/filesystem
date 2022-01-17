@@ -1,4 +1,4 @@
-export function register(x = [])
+export function popup(x = [])
 {
     const $ = require('jquery');
     const Swal = require('sweetalert2');

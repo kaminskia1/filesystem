@@ -1,5 +1,4 @@
 @import "~bootstrap";
-@import "~vue-simple-context-menu/dist/vue-simple-context-menu.css";
 @import '~@sweetalert2/theme-minimal/minimal.scss';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 
@@ -171,4 +170,41 @@ a {
     padding-left: 10px !important;
     transition: none;
     cursor: pointer;
+}
+
+/** Contextmenu styles */
+.contextmenu {
+    list-style: none;
+    position: absolute;
+    background-color: #f8fafc;
+    border-bottom-width: 0;
+    box-shadow: 0 3px 6px 0 rgba(51,51,51,0.2);
+    border-radius: 4px;
+
+}
+.contextmenu > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.contextmenu > ul > li {
+    display: flex;
+    color: #333;
+    cursor: pointer;
+    padding: 5px 15px;
+    align-items: center;
+}
+.contextmenu > ul > li:hover {
+    background: rgba(0,0,0,.05)
+}
+.danger {
+    color: #dc3545 !important;
+}
+.btn {
+    margin: 0 0.5rem !important;
+}
+
+/* Balance width of cancel and accept box */
+.swal2-cancel {
+    width: 132px;
 }

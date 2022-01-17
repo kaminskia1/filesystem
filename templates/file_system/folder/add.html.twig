@@ -3,7 +3,7 @@
 {% block title %}Folder{% endblock %}
 
 {% block body %}
-    {{ form_start(form, {'action': url('site_add_folder', {parentUuid: parent}) }) }}
+    {{ form_start(form, {'action': url('site_folder_add', {parentUuid: parent}) }) }}
     {{ form_errors(form) }}
     {{ form_row(form.name) }}
     {{ form_end(form) }}

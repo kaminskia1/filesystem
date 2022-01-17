@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}File{% endblock %}
+{% block title %}Folder{% endblock %}
 
 {% block body %}
-    {{ form_start(form, {'action': url('site_add_file', {parentUuid: parent}) }) }}
+    {{ form_start(form, {'action': url('site_folder_rename', {uuid: folderUuid}) }) }}
     {{ form_errors(form) }}
     {{ form_row(form.name) }}
     {{ form_end(form) }}
