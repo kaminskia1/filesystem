@@ -3,5 +3,8 @@
 {% block title %}File{% endblock %}
 
 {% block body %}
-    {{form(form)}}
+    {{ form_start(form, {'action': url('site_add_file', {parentUuid: parent}) }) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.name) }}
+    {{ form_end(form) }}
 {% endblock %}

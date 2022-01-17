@@ -2,6 +2,7 @@ export function tree(x = []) {
 
     const ajaxModule = require("../scripts/ajax");
 
+    /** @TODO: convert caret to data attribute and queryselector */
     if (x.length === 0) x = Array.from(document.getElementsByClassName("explorer-caret"));
     x.forEach(ele => {
         ele.addEventListener("click", a => {
@@ -31,8 +32,9 @@ export function tree(x = []) {
                                 container.innerHTML = responseText;
                                 Array.from(container.children[0].children)
                                     .forEach((child) => {
+
                                         // recursion \o/
-                                        tree(ajaxModule, [child.children[0].children[0]]);
+                                        tree([child.children[0].children[0]]);
                                         ajaxModule.ajax([child.children[0].children[1].children[0]]);
                                     });
                             });

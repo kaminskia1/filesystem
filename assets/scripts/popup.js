@@ -9,7 +9,6 @@ export function register(x = [])
         {
             let cache;
             $(element).click((a) => {
-                console.log("clicked", a);
                 if (cache == null) {
                     fetch(a.currentTarget.getAttribute('data-popup-url'))
                         .then(response => response.text())
