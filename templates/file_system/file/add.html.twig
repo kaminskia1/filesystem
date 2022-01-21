@@ -4,7 +4,23 @@
 
 {% block body %}
     {{ form_start(form, {'action': url('site_file_add', {parentUuid: parent}) }) }}
-    {{ form_errors(form) }}
-    {{ form_row(form.name) }}
+    <div class="form-group">
+        {{ form_errors(form) }}
+    </div>
+    <div class="form-group">
+        {{ form_widget(form.name, {'attr': {'placeholder': 'Name'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_widget(form.type, {'attr': {'data-name': 'type', 'onclick': 'javascript:window.fileModifier()'}}) }}
+    </div>
+    <div class="form-group hidden" data-name="url">
+        {{ form_widget(form.url, {'attr': {'placeholder': 'URL'}}) }}
+    </div>
+    <div class="form-group hidden" data-name="file">
+        {{ form_widget(form.file) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.submit) }}
+    </div>
     {{ form_end(form) }}
 {% endblock %}

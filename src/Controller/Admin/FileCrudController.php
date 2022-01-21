@@ -43,7 +43,6 @@ class FileCrudController extends AbstractCrudController
         yield IdField::new('id', "Internal ID")->onlyOnDetail();
         yield AssociationField::new('folder', "Location");
         yield TextField::new('name', "Name");
-        yield TextField::new('extension', "Extension");
         yield ChoiceField::new('type', "Location")->setChoices([
             'a' => 'b'
         ]);

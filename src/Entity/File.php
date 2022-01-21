@@ -35,12 +35,9 @@ class File
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $extension;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * Localized or third party? (0 => Local upload, 1 => Outside URL)
+     *
+     * @ORM\Column(type="integer", length=255)
      */
     private $type;
 
@@ -64,15 +61,14 @@ class File
 
     public function getExtension(): ?string
     {
-        return $this->extension;
+        if (str_contains($this->getName(), "."))
+        {
+            $exp = explode(".", $this->getName());
+            return array_pop($exp);
+        }
+        return null;
     }
 
-    public function setExtension(string $extension): self
-    {
-        $this->extension = $extension;
-
-        return $this;
-    }
 
     public function getName(): ?string
     {

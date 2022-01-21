@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Folder{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'action': url('site_folder_move', {uuid: folderUuid}) }) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form.parentFolder) }}
+    {{ form_end(form) }}
+{% endblock %}

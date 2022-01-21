@@ -26,6 +26,7 @@ export function popup(x = [])
                     Swal.fire({
                         title: a.currentTarget.getAttribute('data-popup-title'),
                         html: cache,
+                        width: 330,
                         showCancelButton: false,
                         showConfirmButton: false,
                     })

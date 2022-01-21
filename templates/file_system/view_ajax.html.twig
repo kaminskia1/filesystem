@@ -3,9 +3,9 @@
 </div>
 <div class="content item-wrapper">
     {% for child in folder %}
-        {% include "file_system/item_card.html.twig" %}
+        {% include "file_system/folder_card.html.twig" %}
     {% endfor %}
     {% for child in files %}
-        {% include "file_system/item_card.html.twig" %}
+        {% include "file_system/file_card.html.twig" %}
     {% endfor %}
 </div>

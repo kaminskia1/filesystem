@@ -5,6 +5,6 @@
 {% block body %}
     {{ form_start(form, {'action': url('site_folder_rename', {uuid: folderUuid}) }) }}
     {{ form_errors(form) }}
-    {{ form_row(form.name) }}
+    {{ form_widget(form.name, {'attr': {'placeholder': 'New Name'}}) }}
     {{ form_end(form) }}
 {% endblock %}

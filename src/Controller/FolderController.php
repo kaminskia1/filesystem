@@ -4,10 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Folder;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Exception;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -126,8 +127,6 @@ class FolderController extends AbstractController
                 'form' => $form
             ]);
         }
-
-
     }
 
     /**
@@ -144,8 +143,37 @@ class FolderController extends AbstractController
      */
     public function move(Request $request, $uuid)
     {
-        return new Response("Move Folder $uuid");
+        /** @var Folder $folder */
+        $folder = $this->getDoctrine()->getManager()->getRepository(Folder::class)->findUuid($uuid);
+        if ($folder !== null) {
+            $form = $this->createFormBuilder($folder)
+                ->add('parentFolder', EntityType::class, [
+                    'class' => Folder::class,
+                    'label' => 'Location',
+                    'placeholder' => '/',
+                    'required' => false,
+                ])
+                ->add('submit', SubmitType::class)
+                ->getForm();
 
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $folder = $form->getData();
+
+                $this->entityManager->persist($folder);
+                $this->entityManager->flush();
+
+                return $this->redirectToRoute("site_view_folder", [
+                    'folder' => $folder->getParentFolder() !== null ? $folder->getParentFolder()->getUuid() : null
+                ]);
+            }
+
+            return $this->renderForm('file_system/folder/move.html.twig', [
+                'folderUuid' => $folder->getUuid(),
+                'form' => $form
+            ]);
+        }
     }
 
     /**

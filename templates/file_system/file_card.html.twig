@@ -1,13 +1,12 @@
 <span data-contextmenu="true"
-      data-contextmenu-action="{% if (child.extension is defined) and (child.url is defined) %}file{% else %}folder{% endif %}"
       data-contextmenu-uuid="{{ child.getUuid() }}"
       data-contextmenu-baseurl="{{ url('site_view') }}">
 
-    <div class="card bg-hover"
-         data-ajax="true"
-         data-ajax-target="target-ajax"
-         href="{% if child.url is defined %}{{ child.url }}{% else %}{{ url('site_view_folder', {folder: child.uuid}) }}{% endif %}"
-         title="{{ child.name }}{% if (child.extension is defined) and (child.url is defined) %}.{{ child.extension }}{% endif %}">
+    <a class="card bg-hover"
+       data-local="{% if child.type == 0 %}true{% else %}false{% endif %}"
+       href="{{ child.url }}"
+       target="_blank"
+       title="{{ child.name }}">
 
         <div>
             <img class="icon"
@@ -16,31 +15,32 @@
         <div class="name">{{ child.name }}</div>
 
 
-    </div>
+    </a>
 
     <div class="contextmenu hidden">
         <ul>
             <li data-contextmenu-action="null"
                 data-ajax="true"
                 data-ajax-target="target-ajax"
-                href="{% if child.url is defined %}{{ child.url }}{% else %}{{ url('site_view_folder', {folder: child.uuid}) }}{% endif %}"
+                href="{{ child.url }}"
             >View</li>
 
+            {# Must be logged in to modify items #}
             {% if is_granted("ROLE_ADMIN") and child.uuid|length > 0 %}
                 <li data-contextmenu-action="popup"
                     data-contextmenu-title="Rename File"
-                    data-contextmenu-href="{{ url('site_folder_rename', {uuid: child.uuid}) }}"
+                    data-contextmenu-href="{{ url('site_file_rename', {uuid: child.uuid}) }}"
                 >Rename</li>
 
                 <li data-contextmenu-action="popup"
                     data-contextmenu-title="Move File"
-                    data-contextmenu-href="{{ url('site_folder_move', {uuid: child.uuid}) }}"
+                    data-contextmenu-href="{{ url('site_file_move', {uuid: child.uuid}) }}"
                 >Move</li>
 
                 <li class="danger"
                     data-contextmenu-action="popup-confirm"
                     data-contextmenu-title="Delete File"
-                    data-contextmenu-href="{{ url('site_folder_delete', {uuid: child.uuid}) }}"
+                    data-contextmenu-href="{{ url('site_file_delete', {uuid: child.uuid}) }}"
                 >Delete</li>
             {% endif %}
         </ul>

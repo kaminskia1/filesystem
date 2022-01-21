@@ -19,6 +19,11 @@ class FileRepository extends ServiceEntityRepository
         parent::__construct($registry, File::class);
     }
 
+    public function findUuid($uuid)
+    {
+        return $this->findOneBy(['uuid'=>$uuid]);
+    }
+
 
 
 
