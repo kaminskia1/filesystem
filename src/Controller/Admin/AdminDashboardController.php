@@ -10,10 +10,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * Class AdminDashboardController
+ *
+ * @isGranted("ROLE_ADMIN")
+ * @package App\Controller\Admin
+ */
 class AdminDashboardController extends AbstractDashboardController
 {
     /**
+     * Admin Dashboard Route
+     *
+     * @isGranted("ROLE_ADMIN")
      * @Route("/admin", name="admin")
      */
     public function index(): Response
@@ -33,7 +43,5 @@ class AdminDashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Entities');
         yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class);
-        yield MenuItem::linkToCrud('Folders', 'fas fa-list', Folder::class);
-        yield MenuItem::linkToCrud('Files', 'fas fa-list', File::class);
     }
 }

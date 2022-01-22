@@ -4,13 +4,13 @@
 
 {% block body %}
     {{ form_start(form, {'action': url('site_folder_add', {parentUuid: parent}) }) }}
-    {{ form_errors(form) }}
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">🗁</span>
+        {{ form_errors(form) }}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">🗁</span>
+            </div>
+            {{ form_widget(form.name, {'attr': {'placeholder': 'Name', 'class': 'form-control'}}) }}
         </div>
-        {{ form_widget(form.name, {'attr': {'placeholder': 'Name', 'class': 'form-control'}}) }}
-    </div>
-    {{ form_widget(form.submit, {'attr': {'class': 'form-control btn-light'}, 'label': 'Confirm'}) }}
+        {{ form_widget(form.submit, {'attr': {'class': 'form-control btn-light'}, 'label': 'Confirm'}) }}
     {{ form_end(form) }}
 {% endblock %}

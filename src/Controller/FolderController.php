@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Folder;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 /**
  * Class FolderController
  *
+ * @isGranted("ROLE_ADMIN")
  * @package App\Controller
  */
 class FolderController extends AbstractController

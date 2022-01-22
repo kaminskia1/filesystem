@@ -2,12 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Core\CoreGroup;
-use App\Entity\Core\CoreRegistrationCode;
-use App\Entity\Core\CoreUser;
 use App\Entity\User;
-use App\Module\Core\CorePasswordHasher;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -66,7 +61,7 @@ class CreateUserCommand extends Command
     {
         $this
             ->setDescription('Create a new user')
-            ->addArgument('email', InputArgument::OPTIONAL, 'A Nickname to append')
+            ->addArgument('email', InputArgument::OPTIONAL, 'An Email to use')
             ->addArgument('password', InputArgument::OPTIONAL, 'The password to encode');
     }
 
@@ -75,7 +70,7 @@ class CreateUserCommand extends Command
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
-     *d
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -87,10 +82,11 @@ class CreateUserCommand extends Command
         $email = $input->getArgument('email') ?? $io->ask("Enter an email");
         $password = $input->getArgument('password') ?? $io->ask("Enter a password");
 
+        // Instantiate new User instance
         $user = new User();
         $user->setEmail($email);
 
-        // Encode password with CorePasswordHasher, and then encode again with the server's standard encoding
+        // Encode with the server's standard encoding
         $user->setPassword(
             $this->passwordEncoder->encodePassword($user, $password)
         );
