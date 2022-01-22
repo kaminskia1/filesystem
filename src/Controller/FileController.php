@@ -171,6 +171,32 @@ class FileController extends AbstractController
     public function delete(Request $request, $uuid = null)
     {
 
+        /** @var Folder $folder */
+        $file = $this->getDoctrine()->getManager()->getRepository(File::class)->findUuid($uuid);
+        if ($file !== null) {
+
+            $form = $this->createFormBuilder($file)
+                ->add('submit', SubmitType::class)
+                ->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                // Flush any remaining changes
+                $this->entityManager->remove($file);
+                $this->entityManager->flush();
+
+                return $this->redirectToRoute("site_view_folder", [
+                    'folder' => $file->getFolder() !== null ? $file->getFolder()->getUuid() : null
+                ]);
+            }
+
+            return $this->renderForm('file_system/file/delete.html.twig', [
+                'fileUuid' => $file->getUuid(),
+                'form' => $form
+            ]);
+        }
+
     }
 
     /**

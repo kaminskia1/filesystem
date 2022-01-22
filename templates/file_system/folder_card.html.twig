@@ -28,18 +28,18 @@
             {# Must be logged in to modify items #}
             {% if is_granted("ROLE_ADMIN") and child.uuid|length > 0 %}
                 <li data-contextmenu-action="popup"
-                    data-contextmenu-title="Rename File"
+                    data-contextmenu-title="Rename Folder"
                     data-contextmenu-href="{{ url('site_folder_rename', {uuid: child.uuid}) }}"
                 >Rename</li>
 
                 <li data-contextmenu-action="popup"
-                    data-contextmenu-title="Move File"
+                    data-contextmenu-title="Move Folder"
                     data-contextmenu-href="{{ url('site_folder_move', {uuid: child.uuid}) }}"
                 >Move</li>
 
                 <li class="danger"
                     data-contextmenu-action="popup-confirm"
-                    data-contextmenu-title="Delete File"
+                    data-contextmenu-title="Delete Folder"
                     data-contextmenu-href="{{ url('site_folder_delete', {uuid: child.uuid}) }}"
                 >Delete</li>
             {% endif %}

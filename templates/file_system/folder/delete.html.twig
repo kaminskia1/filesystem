@@ -5,6 +5,22 @@
 {% block body %}
     {{ form_start(form, {'action': url('site_folder_delete', {uuid: folderUuid}) }) }}
     {{ form_errors(form) }}
-    {{ form_widget(form.type) }}
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text border-bottom-0" style="border-top-right-radius:0;border-bottom-right-radius:0;border-bottom-left-radius:0">
+                {{ form_row(form.type.children[0], {'label': false}) }}
+            </div>
+        </div>
+        <p class="form-control btn-toolbar mb-0 border-bottom-0">Delete Children</p>
+    </div>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text border-top-0" style="border-bottom-right-radius:0;border-top-left-radius:0;border-top-right-radius:0">
+                {{ form_row(form.type.children[1], {'label': false}) }}
+            </div>
+        </div>
+        <p class="form-control btn-toolbar border-top-0">Shift Children Up</p>
+    </div>
+    {{ form_widget(form.submit, {'attr': {'class': 'form-control btn-light'}, 'label': 'Confirm'}) }}
     {{ form_end(form) }}
 {% endblock %}

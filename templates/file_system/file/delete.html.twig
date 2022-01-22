@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Folder{% endblock %}
+{% block title %}File{% endblock %}
 
 {% block body %}
-    {{ form_start(form, {'action': url('site_file_delete', {uuid: folderUuid}) }) }}
+{{ form_start(form, {'action': url('site_file_delete', {uuid: fileUuid}) }) }}
     {{ form_errors(form) }}
-    {{ form_widget(form.type) }}
-    {{ form_end(form) }}
+    {{ form_widget(form.submit, {'attr': {'class': 'form-control btn-light'}, 'label': 'Confirm'}) }}
+{{ form_end(form) }}
 {% endblock %}

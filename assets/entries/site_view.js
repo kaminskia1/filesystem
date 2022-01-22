@@ -14,20 +14,17 @@ Popup.popup();
 Contextmenu.contextmenu();
 
 /* @TODO: Clean this up */
-window.fileModifier = function() {
+window.fileModifier = function () {
     let qs = document.querySelector("[data-name=type]");
-    if (qs.children[2].checked)
-    {
-        document.querySelector("[data-name=url]").classList.remove("hidden");
-        document.querySelector("[data-name=url]").children[0].required = true;
-        document.querySelector("[data-name=file]").classList.add("hidden");
-        document.querySelector("[data-name=file]").children[0].required = false;
-    }
-    if (qs.children[0].checked)
-    {
+    if (qs.checked) {
         document.querySelector("[data-name=file]").classList.remove("hidden");
         document.querySelector("[data-name=file]").children[0].required = true;
         document.querySelector("[data-name=url]").classList.add("hidden");
         document.querySelector("[data-name=url]").children[0].required = false;
+    } else {
+        document.querySelector("[data-name=url]").classList.remove("hidden");
+        document.querySelector("[data-name=url]").children[0].required = true;
+        document.querySelector("[data-name=file]").classList.add("hidden");
+        document.querySelector("[data-name=file]").children[0].required = false;
     }
 }

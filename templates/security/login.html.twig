@@ -13,27 +13,25 @@
                 You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
         {% else %}
-            <div class="form-group field-text">
-                <label for="username" class="sr-only form-control-label required">UUID</label>
-                <div class="form-widget form-widget-with-icon">
-                    <i class="fa fa-fw fa-user"></i>
-                    <input type="text" id="username" name="email" class="form-control" placeholder="E-Mail" value="" required="" autofocus="">
+            <div class="input-group field-username mb-3 mt-6">
+                <div class="input-group-prepend">
+                    <span class="input-group-text text-center" style="width:48px" id="basic-addon1">📧</span>
+
                 </div>
+                <input type="text" id="username" name="email" class="form-control" placeholder="E-Mail" value="" required="" autofocus="">
             </div>
 
-            <div class="form-group field-password">
-                <label for="password" class="sr-only form-control-label required">Password</label>
-                <div class="form-widget form-widget-with-icon">
-                    <i class="fa fa-fw fa-lock"></i>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
+            <div class="input-group field-password mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text text-center" style="width:48px" id="basic-addon1">🔒</span>
                 </div>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
             </div>
+
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <div class="form-group field-button">
-                <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="this.form.submit();">Sign in</button>
-            </div>
+            <button type="submit" class="form-control btn-light" onclick="this.form.submit();">Sign in</button>
         {% endif %}
     </form>
 {% endblock %}

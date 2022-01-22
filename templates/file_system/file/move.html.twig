@@ -4,7 +4,13 @@
 
 {% block body %}
     {{ form_start(form, {'action': url('site_file_move', {parentUuid: parent}) }) }}
-    {{ form_errors(form) }}
-    {{ form_widget(form.parentFolder) }}
+        {{ form_errors(form) }}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">🗋</span>
+            </div>
+            {{ form_widget(form.parentFolder, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {{ form_widget(form.submit, {'attr': {'class': 'form-control btn-light'}, 'label': 'Confirm'}) }}
     {{ form_end(form) }}
 {% endblock %}
