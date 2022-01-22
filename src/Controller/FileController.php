@@ -4,7 +4,11 @@ namespace App\Controller;
 
 use App\Entity\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use App\Entity\Folder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,13 +54,14 @@ class FileController extends AbstractController
      * @Route("/file/add", name="site_add_file_root")
      * @Route("/file/add/{parentUuid}", name="site_file_add")
      *
-     * @param Request $request
-     * @param null    $parentUuid
+     * @param Request          $request
+     * @param SluggerInterface $slugger
+     * @param null             $parentUuid
      *
      * @return Response
      * @throws Exception
      */
-    public function add(Request $request, $parentUuid = null)
+    public function add(Request $request, SluggerInterface $slugger, $parentUuid = null)
     {
         // Instance a new File
         $file = new File();
@@ -101,8 +106,32 @@ class FileController extends AbstractController
             /** @var File $file */
             $file = $form->getData();
 
+            // If local upload requested
+            if ($file->getType() == 0) {
+                /** @var UploadedFile $uploadFile */
+                $uploadFile = $form->get('file')->getData();
+                if ($uploadFile) {
+                    $newFilename = $slugger->slug($file->getName()) . '.' . uniqid() . '.' .
+                        $uploadFile->guessExtension();
+
+                    try {
+                        $uploadFile->move('uploads', $newFilename);
+                    }
+                    catch (FileException $e) {
+                    }
+                    $file->setUrl("/uploads/" . $newFilename);
+
+
+                } else {
+                    // Local upload requested but no file provided
+                    return new Response(400, 400);
+                }
+
+            }
+
             $this->entityManager->persist($file);
             $this->entityManager->flush();
+
 
             return $this->redirectToRoute("site_view_folder", [
                 'folder' => $file->getFolder() !== null ? $file->getFolder()->getUuid() : null
@@ -141,6 +170,7 @@ class FileController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
+                /** @var File $file */
                 $file = $form->getData();
 
                 $this->entityManager->persist($file);
@@ -185,6 +215,15 @@ class FileController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
+                // If is local file
+                if ($file->getType() == 0) {
+                    $fs = new Filesystem();
+                    $exp = explode("/", $file->getUrl());
+                    $dir = 'uploads/' . array_pop($exp);
+                    if ($fs->exists($dir)) {
+                        $fs->remove($dir);
+                    }
+                }
                 // Flush any remaining changes
                 $this->entityManager->remove($file);
                 $this->entityManager->flush();

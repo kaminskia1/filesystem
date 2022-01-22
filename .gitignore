@@ -25,3 +25,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> kaminskia1/filesystem ###
+/public/uploads/
+###< kaminskia1/filesystem ###
