@@ -28,6 +28,7 @@ a {
     display: inline-block;
     cursor: pointer;
     text-align: center;
+    min-width: 106px;
     border: 0;
 }
 .bg-hover:hover {
@@ -203,6 +204,9 @@ a {
 }
 .btn {
     margin: 0 0.5rem !important;
+}
+.form-control:focus {
+    box-shadow: none !important;
 }
 
 /* Balance width of cancel and accept box */

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\File;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use App\Entity\Folder;
@@ -21,6 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 /**
  * Class FileController
  *
+ * @isGranted("ROLE_ADMIN")
  * @package App\Controller
  */
 class FileController extends AbstractController
@@ -154,6 +156,7 @@ class FileController extends AbstractController
                 'form' => $form
             ]);
         }
+        return new Response(404, 404);
     }
 
     /**
@@ -196,6 +199,7 @@ class FileController extends AbstractController
                 'form' => $form
             ]);
         }
+        return new Response(404, 404);
 
     }
 
@@ -213,6 +217,37 @@ class FileController extends AbstractController
      */
     public function move(Request $request, $uuid = null)
     {
+        /** @var Folder $folder */
+        $file = $this->getDoctrine()->getManager()->getRepository(File::class)->findUuid($uuid);
+        if ($file !== null) {
+            $form = $this->createFormBuilder($file)
+                ->add('folder', EntityType::class, [
+                    'class' => Folder::class,
+                    'label' => 'Location',
+                    'placeholder' => '/',
+                    'required' => false,
+                ])
+                ->add('submit', SubmitType::class)
+                ->getForm();
 
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $file = $form->getData();
+
+                $this->entityManager->persist($file);
+                $this->entityManager->flush();
+
+                return $this->redirectToRoute("site_view_folder", [
+                    'folder' => $file->getFolder() !== null ? $file->getFolder()->getUuid() : null
+                ]);
+            }
+
+            return $this->renderForm('file_system/file/move.html.twig', [
+                'fileUuid' => $file->getUuid(),
+                'form' => $form
+            ]);
+        }
+        return new Response(404, 404);
     }
 }
