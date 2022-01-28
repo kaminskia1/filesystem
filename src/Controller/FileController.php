@@ -6,10 +6,8 @@ use App\Entity\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use App\Entity\Folder;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -64,7 +62,7 @@ class FileController extends AbstractController
     public function add(Request $request, SluggerInterface $slugger, $parentUuid = null)
     {
         // Instance a new File
-        $file = new File();
+        $baseFile = new File();
 
         // If not root, attempt to retrieve file
         if ($parentUuid !== null) {
@@ -72,11 +70,11 @@ class FileController extends AbstractController
             if ($parent === null) {
                 throw new Exception("Invalid parent folder UUID");
             }
-            $file->setFolder($parent);
+            $baseFile->setFolder($parent);
         }
 
-        $form = $this->createFormBuilder($file)
-            ->add('name', TextType::class)
+        /* @TODO: Add filesize limiter env variable */
+        $form = $this->createFormBuilder($baseFile)
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'Local' => 0,
@@ -85,56 +83,73 @@ class FileController extends AbstractController
                 'expanded' => true,
                 'multiple' => false,
             ])
+            /* External Options */
+            ->add('name', TextType::class, [
+                'required' => false,
+            ])
             ->add('url', UrlType::class, [
                 'required' => false,
             ])
+            /* Internal Options */
             /* @TODO: Ensure that upload directory is non-executable */
             ->add('file', FileType::class, [
                 'mapped' => false,
                 'required' => false,
-                'constraints' => [
-                    new FileConstraint([
-                        'maxSize' => $_ENV['filesize'] ?? "16m",
-                    ])
-                ]])
+                'multiple' => true,
+                'attr' => [
+                    'multiple' => 'multiple'
+                ]
+            ])
             ->add('submit', SubmitType::class)
             ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var File $file */
-            $file = $form->getData();
+            /** @var File $baseFile */
+            $baseFile = $form->getData();
 
-            // If local upload requested
-            if ($file->getType() == 0) {
-                /** @var UploadedFile $uploadFile */
+            // If local upload
+            if ($baseFile->getType() == 0) {
+                /** @var UploadedFile[] $uploadFile */
                 $uploadFile = $form->get('file')->getData();
-                if ($uploadFile) {
-                    $newFilename = $slugger->slug($file->getName()) . '.' . uniqid() . '.' .
-                        $uploadFile->guessExtension();
 
-                    try {
-                        $uploadFile->move('uploads', $newFilename);
-                    }
-                    catch (FileException $e) {
-                    }
+                foreach ($uploadFile as $uf) {
+                    // Create file instance
+                    $file = new File();
+
+                    // Copy attributes from base file; append uploaded file's name
+                    $file->setFolder($baseFile->getFolder());
+                    $file->setType($baseFile->getType());
+                    $file->setName($uf->getClientOriginalName());
+
+                    // Create slugged name
+                    $newFilename = $slugger->slug($file->getName()) . '.' . uniqid() . '.' .
+                        $uf->guessExtension();
+
+                    $uf->move('uploads', $newFilename);
                     $file->setUrl("/uploads/" . $newFilename);
 
-
-                } else {
-                    // Local upload requested but no file provided
-                    return new Response(400, 400);
+                    // Save new file
+                    $this->entityManager->persist($file);
                 }
 
+            // If external url
+            } else {
+                if ($baseFile->getType() == 1 && !in_array($baseFile->getName(), [null, ''])) {
+                    $this->entityManager->persist($baseFile);
+                } else {
+                    return $this->redirectToRoute("site_view_folder", [
+                        'folder' => $baseFile->getFolder() !== null ? $baseFile->getFolder()->getUuid() : null
+                    ]);
+                }
             }
 
-            $this->entityManager->persist($file);
+            // Save all changes
             $this->entityManager->flush();
 
-
             return $this->redirectToRoute("site_view_folder", [
-                'folder' => $file->getFolder() !== null ? $file->getFolder()->getUuid() : null
+                'folder' => $baseFile->getFolder() !== null ? $baseFile->getFolder()->getUuid() : null
             ]);
         }
 

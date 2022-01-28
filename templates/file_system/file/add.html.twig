@@ -7,12 +7,7 @@
         <div class="form-group">
             {{ form_errors(form) }}
         </div>
-        <div class="input-group mb-3 mt-6">
-            <div class="input-group-prepend">
-                <span class="input-group-text">🗋</span>
-            </div>
-            {{ form_widget(form.name, {'attr': {'placeholder': 'Name', 'class': 'form-control'}}) }}
-        </div>
+
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text border-bottom-0" style="border-top-right-radius:0;border-bottom-right-radius:0;border-bottom-left-radius:0">
@@ -29,17 +24,31 @@
             </div>
             <p class="form-control btn-toolbar mb-0 border-top-0">External Hyperlink</p>
         </div>
-        <div class="input-group mb-3 hidden" data-name="url">
-            <div class="input-group-prepend">
-                <span class="input-group-text">🔗</span>
+
+        <div class="hidden" data-name="url">
+            <div class="input-group mb-3 mt-6">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">🗋</span>
+                </div>
+                {{ form_widget(form.name, {'attr': {'placeholder': 'Name', 'class': 'form-control'}}) }}
             </div>
-            {{ form_widget(form.url, {'attr': {'placeholder': 'URL', 'class': 'form-control'}}) }}
-        </div>
-        <div class="input-group mb-3 hidden" data-name="file">
-            <div class="bg-light border">
-                {{ form_widget(form.file, {'attr': {'class': 'file-upload w-100 p-2'}}) }}
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">🔗</span>
+                </div>
+                {{ form_widget(form.url, {'attr': {'placeholder': 'URL', 'class': 'form-control'}}) }}
             </div>
         </div>
+
+        <div class="hidden" data-name="file">
+            <div class="input-group mb-3">
+                <div class="bg-light border">
+                    {{ form_widget(form.file, {'attr': {'class': 'file-upload w-100 p-2'}}) }}
+                </div>
+            </div>
+        </div>
+
         {{ form_widget(form.submit, {'attr': {'class': 'form-control btn-light'}, 'label': 'Confirm'}) }}
     {{ form_end(form) }}
 {% endblock %}
