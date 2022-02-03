@@ -5,3 +5,4 @@
 - Make file extensions case-insensitive on Unix systems
 - Add proper error notifications
 - Add image previews
+- Open folder on explorer when opened on main view.
