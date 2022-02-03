@@ -1,5 +1,5 @@
 
-[<img src="https://files.kaminski.pw/uploads/Logo-svg.61fc380c29680.svg" width="300" />](https://github.com/kaminskia1/filesystem/)
+[<img src="https://files.kaminski.pw/uploads/Logo-revised-svg.61fc3a07b3ef3.svg" width="300" />](https://github.com/kaminskia1/filesystem/)
 
 [![Created Badge](https://badges.pufler.dev/created/Teitoku42/Chunkify)](https://badges.pufler.dev)
 [![Updated Badge](https://img.shields.io/github/last-commit/kaminskia1/filesystem)](https://github.com/kaminskia1/archer/)
