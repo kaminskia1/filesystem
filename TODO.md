@@ -7,3 +7,4 @@
 - Add local file hashing and integrity checking.
 - Add proper error notifications
 - Add image previews
+- Add github icon link to bottom right
