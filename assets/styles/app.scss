@@ -233,3 +233,18 @@ a {
 .swal2-cancel {
   width: 132px;
 }
+
+.github {
+  transition: color .2s;
+  position: absolute;
+  display: inline-block;
+  bottom: 12px;
+  right: 12px;
+  font-size: 24px;
+  color: darkgray;
+  cursor: pointer;
+}
+
+.github:hover {
+  color: black;
+}
