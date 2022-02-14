@@ -10,7 +10,7 @@
 
         <div>
             <img class="icon"
-                 src="{% if file_exists("build/images/icons/#{child.extension}.svg") %}{{ asset("build/images/icons/#{child.extension}.svg") }}{% else %}{{ asset("build/images/icons/_default.svg") }}{% endif %}"/>
+                 src="{% if file_exists("build/images/icons/#{child.extension|lower}.svg") %}{{ asset("build/images/icons/#{child.extension|lower}.svg") }}{% else %}{{ asset("build/images/icons/_default.svg") }}{% endif %}"/>
         </div>
         <div class="name">{{ child.name }}</div>
 

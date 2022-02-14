@@ -28,7 +28,12 @@ class AppExtension extends AbstractExtension
         ];
     }
 
-
+    /**
+     * @param             $path
+     * @param string|null $packageName
+     *
+     * @return bool
+     */
     public function fileExists($path, string $packageName = null)
     {
         // Grab installation directory and versioned asset location. Glue together with public directory
@@ -37,8 +42,10 @@ class AppExtension extends AbstractExtension
 
     /**
      * @param Folder|mixed $folder
+     *
+     * @return bool
      */
-    public function isValidFolder($folder)
+    public function isValidFolder($folder): bool
     {
         if ($folder instanceof Folder && $folder->getName() !== "..")
         {
