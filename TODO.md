@@ -5,4 +5,6 @@
 - Add open folder on explore when opened on main view.
 - Add local file hashing and integrity checking.
 - Add proper error notifications for login, etc.
-- Add image previews on locally-hosted images
+- Add image previews on locally-hosted images.
+- Add file ordering.
+- Add Drag&drop move for files/folders with explorer tab.
