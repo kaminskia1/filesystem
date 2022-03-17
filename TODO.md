@@ -9,3 +9,4 @@
 - Add A-Z + custom file ordering.
 - Add Drag&drop move for files/folders with explorer tab.
 - Add API endpoints and outgoing webhook support.
+- Add List view for files
