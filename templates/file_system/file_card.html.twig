@@ -3,6 +3,7 @@
       data-contextmenu-baseurl="{{ url('site_view') }}">
 
     <a class="card bg-hover"
+       data-uuid="{{ child.uuid }}"
        data-local="{% if child.type == 0 %}true{% else %}false{% endif %}"
        href="{{ child.url }}"
        target="_blank"

@@ -3,10 +3,11 @@
       data-contextmenu-baseurl="{{ url('site_view') }}">
 
     <a class="card bg-hover"
-         data-ajax="true"
-         data-ajax-target="target-ajax"
-         href="{{ url('site_view_folder', {folder: child.uuid}) }}"
-         title="{{ child.name }}">
+       data-uuid="{{ child.uuid }}"
+       data-ajax="true"
+       data-ajax-target="target-ajax"
+       href="{{ url('site_view_folder', {folder: child.uuid}) }}"
+       title="{{ child.name }}">
 
         <div>
             <img class="icon"

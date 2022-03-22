@@ -51,6 +51,9 @@ export function ajax(x = []) {
                             .querySelectorAll("[data-contextmenu=true]")
                         );
 
+                        const Tree = require("../scripts/tree");
+                        Tree.pseudoClick(element.getAttribute("data-uuid"))
+
                         // Rewrite the url
                         window.history.pushState("", document.title, element.getAttribute("href"))
 
