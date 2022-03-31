@@ -1,4 +1,6 @@
 {
+    "name": "filesystem",
+    "description": "An online file indexer with CDN support.",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
