@@ -12,3 +12,4 @@
 - Add List view for files
 - Add mobile support
 - Add unit tests
+- Add seperation between frontend and backend (vue or angular)
