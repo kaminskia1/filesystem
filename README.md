@@ -10,12 +10,6 @@
 Online file indexer and server with external CDN support. 
 A live demo can be found [here](https://files.kaminski.pw/).
 
-## Requirements
-- PHP >= 7.4.1
-- Composer >= 1.10.10
-- Node >= 14.15.3
-- NPM >= 6.14.9
-
 ## Features
 - Scalable, dynamically-generated, recursive file explorer tree.
 - Asynchronous file indexing / loading with URI rewriting.
